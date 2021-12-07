@@ -8,7 +8,6 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  RELEASE: ${GITHUB_REF##*/R}
 
 jobs:
   build-and-push-image:
@@ -20,6 +19,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+  
+      - name: Extract release name
+        shell: bash
+        run: echo "##[set-output name=release;]$(echo ${GITHUB_REF##*/R})"
+        id: extract_release
 
       - name: Log in to the Container registry
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
@@ -39,8 +43,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.RELEASE }}
+          tags: r${{ steps.extract_release.outputs.release }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
-            FSDA_RELEASE: ${{ env.RELEASE }}
+            FSDA_RELEASE: ${{ steps.extract_release.outputs.release }}
 

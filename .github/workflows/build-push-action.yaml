@@ -2,12 +2,13 @@ name: Create and publish a Docker image
 
 on:
   push:
-    branches:
-      - "main"
+    tags:
+      - "R*"
 
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  RELEASE: ${GITHUB_REF##*/R}
 
 jobs:
   build-and-push-image:
@@ -38,5 +39,8 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: ${{ env.RELEASE }}
           labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            FSDA_RELEASE: ${{ env.RELEASE }}
+

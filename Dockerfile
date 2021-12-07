@@ -1,4 +1,8 @@
-FROM mathworks/matlab:r2021b
+ARG FSDA_RELEASE=2021b
+ARG DOCKER_TAG=r${FSDA_RELEASE}
+FROM mathworks/matlab:$DOCKER_TAG
+ARG FSDA_RELEASE
+ARG MATLAB_RELEASE=R${FSDA_RELEASE}
 
 USER root
 WORKDIR /root
@@ -10,19 +14,19 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && \
 
 RUN wget -q https://www.mathworks.com/mpm/glnxa64/mpm && \
     chmod +x mpm && \
-    ./mpm install --destination=/opt/matlab/${RELEASE}/ --release=${RELEASE} \
+    ./mpm install --destination=/opt/matlab/${MATLAB_RELEASE}/ --release=${MATLAB_RELEASE} \
         Statistics_and_Machine_Learning_Toolbox && \
     rm -f mpm
 
 RUN mkdir /opt/fsda/ && \
     cd /opt/fsda/ && \
-    wget -q https://github.com/UniprJRC/FSDA/archive/refs/tags/2021b.tar.gz && \
-    tar -xvzf 2021b.tar.gz  && \
-    rm 2021b.tar.gz && \
-    cd FSDA-2021b && \
+    wget -q https://github.com/UniprJRC/FSDA/archive/refs/tags/${FSDA_RELEASE}.tar.gz && \
+    tar -xvzf ${FSDA_RELEASE}.tar.gz  && \
+    rm ${FSDA_RELEASE}.tar.gz && \
+    cd FSDA-${FSDA_RELEASE} && \
     rm -rf .github circleci _* 
 
-RUN cp -r /opt/fsda/FSDA-2021b/helpfiles/FSDA /opt/matlab/R2021b/help/FSDA
+RUN cp -r /opt/fsda/FSDA-${FSDA_RELEASE}/helpfiles/FSDA /opt/matlab/${MATLAB_RELEASE}/help/FSDA
 
 USER matlab
 WORKDIR /home/matlab

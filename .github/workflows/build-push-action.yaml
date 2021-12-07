@@ -43,7 +43,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: r${{ steps.extract_release.outputs.release }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:r${{ steps.extract_release.outputs.release }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             FSDA_RELEASE: ${{ steps.extract_release.outputs.release }}

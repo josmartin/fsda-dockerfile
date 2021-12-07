@@ -15,7 +15,10 @@ RUN export DEBIAN_FRONTEND=noninteractive && apt-get update && \
 RUN wget -q https://www.mathworks.com/mpm/glnxa64/mpm && \
     chmod +x mpm && \
     ./mpm install --destination=/opt/matlab/${MATLAB_RELEASE}/ --release=${MATLAB_RELEASE} \
-        Statistics_and_Machine_Learning_Toolbox && \
+        Statistics_and_Machine_Learning_Toolbox \
+        Parallel_Computing_Toolbox \ 
+        MATLAB_Coder \
+        Optimization_Toolbox && \
     rm -f mpm
 
 RUN mkdir /opt/fsda/ && \

@@ -32,7 +32,8 @@ RUN mkdir /opt/fsda/ && \
 # TODO - consider if this is an mv rather than a cp?
 RUN cp -r /opt/fsda/FSDA-${FSDA_RELEASE}/helpfiles/FSDA /opt/matlab/${MATLAB_RELEASE}/help/FSDA
 
-# TODO - one time startup.m that undertakes installation etc. of FSDA in MATLAB
+# One time startup.m that undertakes installation etc. of FSDA in MATLAB
+COPY startup.m /opt/matlab/${MATLAB_RELEASE}/toolbox/local
 
 USER matlab
 WORKDIR /home/matlab

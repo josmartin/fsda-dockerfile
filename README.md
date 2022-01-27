@@ -13,7 +13,7 @@ This container is built directly `FROM` [`mathworks/matlab`](https://hub.docker.
 To build this container clone the repository and execute
 
 ```
-docker build -t fsda-dockerfile --build-args FSDA_RELEASE=2021b .
+docker build -t fsda-dockerfile --build-arg FSDA_RELEASE=2021b .
 ```
 
 You can specify previous versions by modifying the `FSDA_RELEASE=2021b` build argument.
